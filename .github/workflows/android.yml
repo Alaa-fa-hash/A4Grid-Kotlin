@@ -20,9 +20,16 @@ jobs:
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - name: Generate release keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -genkeypair -v -keystore ~/.android/release.keystore \
+            -storepass android -alias releasekey -keypass android \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=A4Grid,O=A4Grid,C=SA"
       - run: chmod +x ./gradlew
       - run: ./gradlew :app:assembleRelease
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: app/build/outputs/apk/release/*.apk
+          files: app/build/outputs/apk/release/app-release.apk
