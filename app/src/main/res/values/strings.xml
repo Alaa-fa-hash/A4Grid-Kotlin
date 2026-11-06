@@ -3,7 +3,10 @@
     <string name="add_images">إضافة صور</string>
     <string name="new_project">مشروع جديد</string>
     <string name="export_pdf">تصدير PDF</string>
+    <string name="undo">تراجع</string>
+    <string name="redo">إعادة</string>
     <string name="select_cell">اختر خلية للتحرير</string>
+    <string name="selected_cell">الصورة في الخلية</string>
     <string name="zoom">التكبير</string>
     <string name="rotate_left">تدوير يسار</string>
     <string name="rotate_right">تدوير يمين</string>
@@ -11,11 +14,15 @@
     <string name="fit_contain">احتواء</string>
     <string name="fit_cover">ملء</string>
     <string name="reset">إعادة تعيين</string>
-    <string name="swap_with">تبديل مع خلية…</string>
+    <string name="swap_with">تبديل مع خلية</string>
     <string name="delete_image">حذف الصورة</string>
     <string name="save_success">تم الحفظ</string>
     <string name="export_success">تم إنشاء ملف PDF</string>
     <string name="error_pick">تعذّر اختيار الصور</string>
     <string name="error_export">تعذّر إنشاء PDF</string>
     <string name="confirm_new_project">هل تريد بدء مشروع جديد؟ سيتم مسح الحالي.</string>
+    <string name="ok">موافق</string>
+    <string name="cancel">إلغاء</string>
+    <string name="exporting">جارٍ التصدير</string>
+    <string name="share_pdf">مشاركة PDF</string>
 </resources>

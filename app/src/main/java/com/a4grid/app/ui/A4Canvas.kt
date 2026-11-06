@@ -13,32 +13,35 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.a4grid.app.model.Slot
 
 @Composable
 fun A4Canvas(
+    slots: List<Slot?>,
+    selectedIndex: Int?,
+    onSelect: (Int) -> Unit,
+    onDrag: (Float, Float) -> Unit,
+    onDragEnd: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(8.dp)
-
     Surface(
-        modifier = modifier
-            .shadow(elevation = 4.dp, shape = shape)
-            .clip(shape)
-            .background(Color.White, shape),
+        modifier = modifier.shadow(4.dp, shape).clip(shape).background(Color.White, shape),
         color = Color.White,
         shape = shape
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             repeat(4) { rowIndex ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
+                Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
                     repeat(2) { columnIndex ->
-                        val cellNumber = rowIndex * 2 + columnIndex + 1
+                        val cellNumber = rowIndex * 2 + columnIndex
                         CellBox(
-                            index = cellNumber,
+                            index = cellNumber + 1,
+                            slot = slots.getOrNull(cellNumber),
+                            selected = selectedIndex == cellNumber,
+                            onSelect = { onSelect(cellNumber) },
+                            onDrag = onDrag,
+                            onDragEnd = onDragEnd,
                             modifier = Modifier.weight(1f)
                         )
                     }
