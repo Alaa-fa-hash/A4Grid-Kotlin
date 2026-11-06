@@ -34,8 +34,6 @@ fun EditorPanel(
     onFit: (FitMode) -> Unit,
     onRotateLeft: () -> Unit,
     onRotateRight: () -> Unit,
-    onFineRotation: (Float) -> Unit,
-    onFineFinished: () -> Unit,
     onReset: () -> Unit,
     onSwap: (Int) -> Unit,
     onDelete: () -> Unit
@@ -72,13 +70,6 @@ fun EditorPanel(
             Button(onClick = onRotateLeft) { Text(stringResource(R.string.rotate_left)) }
             Button(onClick = onRotateRight) { Text(stringResource(R.string.rotate_right)) }
         }
-        Text(stringResource(R.string.fine_rotation), style = MaterialTheme.typography.labelLarge)
-        Slider(
-            value = slot.transform.fineRotation,
-            onValueChange = onFineRotation,
-            onValueChangeFinished = onFineFinished,
-            valueRange = -45f..45f
-        )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = onReset) { Text(stringResource(R.string.reset)) }
             TextButton(onClick = { swapDialog = true }) { Text(stringResource(R.string.swap_with)) }

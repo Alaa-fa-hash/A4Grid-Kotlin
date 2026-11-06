@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Redo
 import androidx.compose.material.icons.filled.Undo
@@ -109,23 +111,25 @@ fun A4GridApp(viewModel: A4GridViewModel) {
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
-                    A4Canvas(
-                        slots = slots,
-                        selectedIndex = selectedIndex,
-                        onSelect = viewModel::select,
-                        onDrag = { x, y ->
-                            val index = viewModel.selectedIndex.value
-                            val current = index?.let { slots.getOrNull(it)?.transform }
-                            if (current != null) viewModel.setOffset(current.offsetX + x, current.offsetY + y)
-                        },
-                        onDragEnd = { viewModel.pushHistory() },
-                        modifier = Modifier.fillMaxWidth().aspectRatio(210f / 297f)
-                    )
-                }
+                A4Canvas(
+                    slots = slots,
+                    selectedIndex = selectedIndex,
+                    onSelect = viewModel::select,
+                    onDrag = { x, y ->
+                        val index = viewModel.selectedIndex.value
+                        val current = index?.let { slots.getOrNull(it)?.transform }
+                        if (current != null) viewModel.setOffset(current.offsetX + x, current.offsetY + y)
+                    },
+                    onDragEnd = { viewModel.pushHistory() },
+                    modifier = Modifier.fillMaxWidth().aspectRatio(210f / 297f)
+                )
                 EditorPanel(
                     selectedIndex = selectedIndex,
                     slots = slots,
@@ -134,8 +138,6 @@ fun A4GridApp(viewModel: A4GridViewModel) {
                     onFit = { viewModel.pushHistory(); viewModel.setFit(it) },
                     onRotateLeft = { viewModel.pushHistory(); viewModel.rotateLeft() },
                     onRotateRight = { viewModel.pushHistory(); viewModel.rotateRight() },
-                    onFineRotation = viewModel::setFineRotation,
-                    onFineFinished = viewModel::pushHistory,
                     onReset = { viewModel.pushHistory(); viewModel.reset() },
                     onSwap = { other -> selectedIndex?.let { viewModel.swap(it, other) } },
                     onDelete = { selectedIndex?.let(viewModel::delete) }

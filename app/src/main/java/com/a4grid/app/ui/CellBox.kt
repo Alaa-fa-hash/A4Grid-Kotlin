@@ -3,6 +3,7 @@ package com.a4grid.app.ui
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,6 +42,7 @@ fun CellBox(
             .fillMaxSize()
             .border(if (selected) 2.dp else 1.dp, if (selected) Color(0xFF1565C0) else Color.LightGray)
             .clipToBounds()
+            .clickable(onClick = onSelect)
             .pointerInput(index, selected) {
                 detectDragGestures(
                     onDragStart = { onSelect() },
