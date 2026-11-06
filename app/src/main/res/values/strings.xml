@@ -27,4 +27,5 @@
     <string name="cancel">إلغاء</string>
     <string name="exporting">جارٍ التصدير</string>
     <string name="share_pdf">مشاركة PDF</string>
+    <string name="back_to_page">العودة إلى الصفحة</string>
 </resources>
