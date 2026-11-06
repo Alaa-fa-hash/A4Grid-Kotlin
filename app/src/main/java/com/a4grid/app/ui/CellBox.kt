@@ -64,8 +64,8 @@ fun CellBox(
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
-                        scaleX = slot.transform.zoom
-                        scaleY = slot.transform.zoom
+                        scaleX = slot.transform.zoom * slot.transform.stretchX
+                        scaleY = slot.transform.zoom * slot.transform.stretchY
                         rotationZ = slot.transform.rotation + slot.transform.fineRotation
                         translationX = slot.transform.offsetX
                         translationY = slot.transform.offsetY

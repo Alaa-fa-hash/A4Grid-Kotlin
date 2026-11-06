@@ -42,6 +42,8 @@ class A4GridViewModel(context: Context) {
     }
 
     fun setZoom(value: Float) = updateSelected { it.copy(zoom = value.coerceIn(1f, 3f)) }
+    fun setStretchX(value: Float) = updateSelected { it.copy(stretchX = value.coerceIn(0.5f, 2f)) }
+    fun setStretchY(value: Float) = updateSelected { it.copy(stretchY = value.coerceIn(0.5f, 2f)) }
     fun rotateRight() = updateSelected { it.copy(rotation = it.rotation + 90).normalized() }
     fun rotateLeft() = updateSelected { it.copy(rotation = it.rotation - 90).normalized() }
     fun setFineRotation(value: Float) = updateSelected { it.copy(fineRotation = value.coerceIn(-45f, 45f)) }
@@ -49,6 +51,8 @@ class A4GridViewModel(context: Context) {
         it.copy(
             fit = fit,
             zoom = 1f,
+            stretchX = 1f,
+            stretchY = 1f,
             offsetX = 0f,
             offsetY = 0f
         )

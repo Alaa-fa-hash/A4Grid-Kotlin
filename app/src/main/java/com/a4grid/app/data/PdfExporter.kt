@@ -38,17 +38,19 @@ object PdfExporter {
                 canvas.clipRect(destination)
                 val sourceWidth = bitmap.width.toFloat()
                 val sourceHeight = bitmap.height.toFloat()
-                val scale = if (slot.transform.fit == FitMode.COVER) {
+                val baseScale = if (slot.transform.fit == FitMode.COVER) {
                     maxOf(cellWidth / sourceWidth, cellHeight / sourceHeight)
                 } else {
                     minOf(cellWidth / sourceWidth, cellHeight / sourceHeight)
                 } * slot.transform.zoom
+                val scaleX = baseScale * slot.transform.stretchX
+                val scaleY = baseScale * slot.transform.stretchY
                 val matrix = Matrix().apply {
-                    postScale(scale, scale)
+                    postScale(scaleX, scaleY)
                     postRotate(slot.transform.rotation + slot.transform.fineRotation, sourceWidth / 2f, sourceHeight / 2f)
                     postTranslate(
-                        left + cellWidth / 2f - sourceWidth * scale / 2f + slot.transform.offsetX,
-                        top + cellHeight / 2f - sourceHeight * scale / 2f + slot.transform.offsetY
+                        left + cellWidth / 2f - sourceWidth * scaleX / 2f + slot.transform.offsetX,
+                        top + cellHeight / 2f - sourceHeight * scaleY / 2f + slot.transform.offsetY
                     )
                 }
                 canvas.drawBitmap(bitmap, matrix, paint)

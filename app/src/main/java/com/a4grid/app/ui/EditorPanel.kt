@@ -31,6 +31,10 @@ fun EditorPanel(
     slots: List<Slot?>,
     onZoom: (Float) -> Unit,
     onZoomFinished: () -> Unit,
+    onStretchX: (Float) -> Unit,
+    onStretchXFinished: () -> Unit,
+    onStretchY: (Float) -> Unit,
+    onStretchYFinished: () -> Unit,
     onFit: (FitMode) -> Unit,
     onRotateLeft: () -> Unit,
     onRotateRight: () -> Unit,
@@ -51,6 +55,20 @@ fun EditorPanel(
             onValueChange = onZoom,
             onValueChangeFinished = onZoomFinished,
             valueRange = 1f..3f
+        )
+        Text(stringResource(R.string.stretch_horizontal), style = MaterialTheme.typography.labelLarge)
+        Slider(
+            value = slot.transform.stretchX,
+            onValueChange = onStretchX,
+            onValueChangeFinished = onStretchXFinished,
+            valueRange = 0.5f..2f
+        )
+        Text(stringResource(R.string.stretch_vertical), style = MaterialTheme.typography.labelLarge)
+        Slider(
+            value = slot.transform.stretchY,
+            onValueChange = onStretchY,
+            onValueChangeFinished = onStretchYFinished,
+            valueRange = 0.5f..2f
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(

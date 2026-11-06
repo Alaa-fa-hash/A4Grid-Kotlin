@@ -8,6 +8,8 @@
     <string name="select_cell">اختر خلية للتحرير</string>
     <string name="selected_cell">الصورة في الخلية</string>
     <string name="zoom">التكبير</string>
+    <string name="stretch_horizontal">استطالة أفقية</string>
+    <string name="stretch_vertical">استطالة عمودية</string>
     <string name="rotate_left">تدوير يسار</string>
     <string name="rotate_right">تدوير يمين</string>
     <string name="fine_rotation">تدوير دقيق</string>
