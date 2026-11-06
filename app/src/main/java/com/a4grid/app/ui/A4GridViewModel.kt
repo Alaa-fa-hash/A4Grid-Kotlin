@@ -45,7 +45,14 @@ class A4GridViewModel(context: Context) {
     fun rotateRight() = updateSelected { it.copy(rotation = it.rotation + 90).normalized() }
     fun rotateLeft() = updateSelected { it.copy(rotation = it.rotation - 90).normalized() }
     fun setFineRotation(value: Float) = updateSelected { it.copy(fineRotation = value.coerceIn(-45f, 45f)) }
-    fun setFit(fit: FitMode) = updateSelected { it.copy(fit = fit) }
+    fun setFit(fit: FitMode) = updateSelected {
+        it.copy(
+            fit = fit,
+            zoom = 1f,
+            offsetX = 0f,
+            offsetY = 0f
+        )
+    }
     fun setOffset(x: Float, y: Float) = updateSelected { it.copy(offsetX = x, offsetY = y) }
     fun reset() = updateSelected { Transform() }
 
