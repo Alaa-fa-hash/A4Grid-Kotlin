@@ -232,7 +232,7 @@ private fun SingleImageEditor(
 ) {
     val index = selectedIndex ?: return
     val controls = @Composable {
-        Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(12.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
             EditorPanel(
                 selectedIndex = selectedIndex,
                 slots = slots,
@@ -270,7 +270,12 @@ private fun SingleImageEditor(
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            Box(modifier = Modifier.weight(1f).fillMaxHeight()) { controls() }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
+            ) { controls() }
         }
     } else {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp)) {
