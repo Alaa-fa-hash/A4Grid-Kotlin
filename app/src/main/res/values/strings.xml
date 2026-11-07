@@ -28,4 +28,11 @@
     <string name="exporting">جارٍ التصدير</string>
     <string name="share_pdf">مشاركة PDF</string>
     <string name="back_to_page">العودة إلى الصفحة</string>
+    <string name="crop_image">اقتصاص الصورة</string>
+    <string name="crop_left">قص من اليسار</string>
+    <string name="crop_top">قص من الأعلى</string>
+    <string name="crop_right">قص من اليمين</string>
+    <string name="crop_bottom">قص من الأسفل</string>
+    <string name="reset_crop">إلغاء الاقتصاص</string>
+    <string name="apply">تطبيق</string>
 </resources>

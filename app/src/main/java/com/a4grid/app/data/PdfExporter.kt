@@ -3,6 +3,7 @@ package com.a4grid.app.data
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
 import com.a4grid.app.model.FitMode
@@ -35,8 +36,13 @@ object PdfExporter {
                 val destination = RectF(left, top, left + cellWidth, top + cellHeight)
                 canvas.save()
                 canvas.clipRect(destination)
-                val sourceWidth = bitmap.width.toFloat()
-                val sourceHeight = bitmap.height.toFloat()
+                val sourceLeft = (bitmap.width * slot.transform.cropLeft).toInt().coerceIn(0, bitmap.width - 1)
+                val sourceTop = (bitmap.height * slot.transform.cropTop).toInt().coerceIn(0, bitmap.height - 1)
+                val sourceRight = (bitmap.width * slot.transform.cropRight).toInt().coerceIn(sourceLeft + 1, bitmap.width)
+                val sourceBottom = (bitmap.height * slot.transform.cropBottom).toInt().coerceIn(sourceTop + 1, bitmap.height)
+                val sourceRect = Rect(sourceLeft, sourceTop, sourceRight, sourceBottom)
+                val sourceWidth = (sourceRight - sourceLeft).toFloat()
+                val sourceHeight = (sourceBottom - sourceTop).toFloat()
                 val baseScale = if (slot.transform.fit == FitMode.COVER) {
                     maxOf(cellWidth / sourceWidth, cellHeight / sourceHeight)
                 } else {
@@ -54,7 +60,12 @@ object PdfExporter {
                 )
                 canvas.rotate(slot.transform.rotation + slot.transform.fineRotation)
                 canvas.scale(scaleX, scaleY)
-                canvas.drawBitmap(bitmap, -sourceWidth / 2f, -sourceHeight / 2f, paint)
+                canvas.drawBitmap(
+                    bitmap,
+                    sourceRect,
+                    RectF(-sourceWidth / 2f, -sourceHeight / 2f, sourceWidth / 2f, sourceHeight / 2f),
+                    paint
+                )
                 canvas.restore()
                 bitmap.recycle()
             }

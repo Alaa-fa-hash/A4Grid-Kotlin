@@ -14,13 +14,21 @@ data class Transform(
     val fineRotation: Float = 0f,
     val fit: FitMode = FitMode.CONTAIN,
     val offsetX: Float = 0f,
-    val offsetY: Float = 0f
+    val offsetY: Float = 0f,
+    val cropLeft: Float = 0f,
+    val cropTop: Float = 0f,
+    val cropRight: Float = 1f,
+    val cropBottom: Float = 1f
 ) {
     fun normalized(): Transform = copy(
         zoom = zoom.coerceIn(1f, 3f),
         stretchX = stretchX.coerceIn(0.5f, 2f),
         stretchY = stretchY.coerceIn(0.5f, 2f),
         rotation = ((rotation % 360) + 360) % 360,
-        fineRotation = fineRotation.coerceIn(-45f, 45f)
+        fineRotation = fineRotation.coerceIn(-45f, 45f),
+        cropLeft = cropLeft.coerceIn(0f, 0.95f),
+        cropTop = cropTop.coerceIn(0f, 0.95f),
+        cropRight = cropRight.coerceIn(0.05f, 1f),
+        cropBottom = cropBottom.coerceIn(0.05f, 1f)
     )
 }
