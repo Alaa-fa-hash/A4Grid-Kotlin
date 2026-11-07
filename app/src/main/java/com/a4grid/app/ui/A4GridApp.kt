@@ -138,11 +138,12 @@ fun A4GridApp(viewModel: A4GridViewModel) {
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             if (editing && selectedIndex != null) {
-                SingleImageEditor(
+                EditorWorkspace(
                     slots = slots,
                     selectedIndex = selectedIndex,
                     isLandscape = isLandscape,
                     viewModel = viewModel,
+                    onSelect = { viewModel.select(it) },
                     onDone = { editing = false }
                 )
             } else {
@@ -181,6 +182,74 @@ fun A4GridApp(viewModel: A4GridViewModel) {
             },
             dismissButton = { TextButton(onClick = { newProjectDialog = false }) { Text(stringResource(R.string.cancel)) } }
         )
+    }
+}
+
+@Composable
+private fun EditorWorkspace(
+    slots: List<Slot?>,
+    selectedIndex: Int?,
+    isLandscape: Boolean,
+    viewModel: A4GridViewModel,
+    onSelect: (Int) -> Unit,
+    onDone: () -> Unit
+) {
+    val page = @Composable {
+        A4Canvas(
+            slots = slots,
+            selectedIndex = selectedIndex,
+            onSelect = onSelect,
+            onDrag = { x, y ->
+                val index = viewModel.selectedIndex.value
+                val current = index?.let { slots.getOrNull(it)?.transform }
+                if (current != null) viewModel.setOffset(current.offsetX + x, current.offsetY + y)
+            },
+            onDragEnd = viewModel::pushHistory,
+            modifier = Modifier.fillMaxWidth().aspectRatio(210f / 297f)
+        )
+    }
+    val controls = @Composable {
+        Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+            EditorPanel(
+                selectedIndex = selectedIndex,
+                slots = slots,
+                onZoom = viewModel::setZoom,
+                onZoomFinished = viewModel::pushHistory,
+                onStretchX = viewModel::setStretchX,
+                onStretchXFinished = viewModel::pushHistory,
+                onStretchY = viewModel::setStretchY,
+                onStretchYFinished = viewModel::pushHistory,
+                onFit = { viewModel.pushHistory(); viewModel.setFit(it) },
+                onRotateLeft = { viewModel.pushHistory(); viewModel.rotateLeft() },
+                onRotateRight = { viewModel.pushHistory(); viewModel.rotateRight() },
+                onReset = { viewModel.pushHistory(); viewModel.reset() },
+                onSwap = { other -> selectedIndex?.let { viewModel.swap(it, other) } },
+                onDelete = { selectedIndex?.let(viewModel::delete) }
+            )
+            Button(onClick = onDone, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+                Text(stringResource(R.string.back_to_page))
+            }
+        }
+    }
+    if (isLandscape) {
+        Row(
+            modifier = Modifier.fillMaxSize().padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.TopCenter) { page() }
+            Box(
+                modifier = Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState())
+            ) { controls() }
+        }
+    } else {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(12.dp).verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            page()
+            controls()
+        }
     }
 }
 
