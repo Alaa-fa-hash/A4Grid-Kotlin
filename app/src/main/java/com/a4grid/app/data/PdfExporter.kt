@@ -2,7 +2,6 @@ package com.a4grid.app.data
 
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
@@ -45,15 +44,17 @@ object PdfExporter {
                 } * slot.transform.zoom
                 val scaleX = baseScale * slot.transform.stretchX
                 val scaleY = baseScale * slot.transform.stretchY
-                val matrix = Matrix().apply {
-                    postScale(scaleX, scaleY)
-                    postRotate(slot.transform.rotation + slot.transform.fineRotation, sourceWidth / 2f, sourceHeight / 2f)
-                    postTranslate(
-                        left + cellWidth / 2f - sourceWidth * scaleX / 2f + slot.transform.offsetX,
-                        top + cellHeight / 2f - sourceHeight * scaleY / 2f + slot.transform.offsetY
-                    )
-                }
-                canvas.drawBitmap(bitmap, matrix, paint)
+                // Apply transformations around the image center. Building the
+                // transform through Canvas keeps rotated images inside their
+                // intended cell; Matrix post operations can move them outside
+                // the page when rotation and translation are combined.
+                canvas.translate(
+                    left + cellWidth / 2f + slot.transform.offsetX,
+                    top + cellHeight / 2f + slot.transform.offsetY
+                )
+                canvas.rotate(slot.transform.rotation + slot.transform.fineRotation)
+                canvas.scale(scaleX, scaleY)
+                canvas.drawBitmap(bitmap, -sourceWidth / 2f, -sourceHeight / 2f, paint)
                 canvas.restore()
                 bitmap.recycle()
             }
