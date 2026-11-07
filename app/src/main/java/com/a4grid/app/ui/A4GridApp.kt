@@ -138,12 +138,12 @@ fun A4GridApp(viewModel: A4GridViewModel) {
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             if (editing && selectedIndex != null) {
-                EditorWorkspace(
+                SingleImageEditor(
+                    innerPadding = innerPadding,
                     slots = slots,
                     selectedIndex = selectedIndex,
                     isLandscape = isLandscape,
                     viewModel = viewModel,
-                    onSelect = { viewModel.select(it) },
                     onDone = { editing = false }
                 )
             } else {
@@ -187,6 +187,7 @@ fun A4GridApp(viewModel: A4GridViewModel) {
 
 @Composable
 private fun EditorWorkspace(
+    innerPadding: PaddingValues,
     slots: List<Slot?>,
     selectedIndex: Int?,
     isLandscape: Boolean,
@@ -233,7 +234,7 @@ private fun EditorWorkspace(
     }
     if (isLandscape) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(12.dp),
+            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.Top
         ) {
@@ -244,7 +245,7 @@ private fun EditorWorkspace(
         }
     } else {
         Column(
-            modifier = Modifier.fillMaxSize().padding(12.dp).verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(12.dp).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             page()
@@ -293,6 +294,7 @@ private fun PagePreview(
 
 @Composable
 private fun SingleImageEditor(
+    innerPadding: PaddingValues,
     slots: List<Slot?>,
     selectedIndex: Int?,
     isLandscape: Boolean,
@@ -324,7 +326,7 @@ private fun SingleImageEditor(
         }
     }
     if (isLandscape) {
-        Row(modifier = Modifier.fillMaxSize().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(modifier = Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
                 CellBox(
                     index = index + 1,
@@ -347,7 +349,7 @@ private fun SingleImageEditor(
             ) { controls() }
         }
     } else {
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp)) {
+        Column(modifier = Modifier.fillMaxSize().padding(innerPadding).verticalScroll(rememberScrollState()).padding(12.dp)) {
             Box(modifier = Modifier.fillMaxWidth().heightIn(min = 240.dp, max = 440.dp), contentAlignment = Alignment.Center) {
                 CellBox(
                     index = index + 1,
