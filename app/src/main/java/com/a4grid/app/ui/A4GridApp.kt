@@ -302,6 +302,8 @@ private fun SingleImageEditor(
     onDone: () -> Unit
 ) {
     val index = selectedIndex ?: return
+    // One printed cell is half the A4 width and one quarter of its height.
+    val cellAspectRatio = (210f / 2f) / (297f / 4f)
     val controls = @Composable {
         Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
             EditorPanel(
@@ -338,7 +340,7 @@ private fun SingleImageEditor(
                         if (current != null) viewModel.setOffset(current.offsetX + x, current.offsetY + y)
                     },
                     onDragEnd = viewModel::pushHistory,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxWidth().aspectRatio(cellAspectRatio)
                 )
             }
             Box(
@@ -361,7 +363,7 @@ private fun SingleImageEditor(
                         if (current != null) viewModel.setOffset(current.offsetX + x, current.offsetY + y)
                     },
                     onDragEnd = viewModel::pushHistory,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxWidth().aspectRatio(cellAspectRatio)
                 )
             }
             controls()
